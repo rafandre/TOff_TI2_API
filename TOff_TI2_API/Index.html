@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/chosen.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+    <link href="Content/TimeOff.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: beige;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">TimeOff</div>
+    <div id="pagina">
+
+    </div>
+
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/chosen.jquery.js"></script>
+    <script src="Scripts/respond.js"></script>
+
+    <script>
+        function geraFilmeParaLista(item) {
+            var holder = $("<div>"); // faz o mesmo que var holder = document.createElement("div");
+            holder.addClass("seg");
+
+            var texto = $("<div>"); // cria uma Div
+            texto.addClass("texto"); //Adiciona uma classe
+
+            var h2 = $("<h2>");
+            h2.text(item.titulo);
+            texto.append(h2);
+            holder.append(texto);
+            var img = $("<img>");
+            img.attr("src", "Imagens/" + item.id + item.imagem); //Adiciona  a Imagem do Filme 
+            img.css({ width: "100%", minHeight: "100%", height: "auto", marginTop: "-65px" }); 
+            holder.append(img);
+            return holder;
+        }
+
+
+        function generateListFilmes(items) {
+            var holder = $("<div>");
+            holder.addClass("prim");
+            var i;
+            for (i = 0; i < items.length; i++) {
+                holder.append(geraFilmeParaLista(items[i]));
+            }
+            $("#pagina").html("").append(holder);
+        }
+
+        function getFilmesList() {
+            return fetch("/api/filmes", { headers: { Accept: "application/json" } })
+                .then(function (resposta) {
+                    if (resposta.status === 200) {
+                        return resposta.json();
+                    } else {
+                        return Promise.reject(new Error("Um Erro ocurreu"));
+                    }
+                });
+        }
+
+        $(window).load(function () {
+            getFilmesList().then(function (r) {
+                generateListFilmes(r);
+            });
+        });
+    </script>
+</body>
+</html>
