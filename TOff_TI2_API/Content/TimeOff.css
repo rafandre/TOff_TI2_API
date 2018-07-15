@@ -1,12 +1,19 @@
-﻿
+﻿body {
+    background-color: beige;
+    width: 80%;
+    max-width: 80%;
+    margin:auto;
+}
 .logo {
     width: 100%;
     color: beige;
     background-color: #000000;
     text-align: center;
-    font-family: Arial;
+    font-family:Arial;
     font-size: 100px;
     text-decoration: none;
+    align-content:center;
+    cursor: pointer;
 }
 
     .logo:hover,
@@ -51,7 +58,7 @@
     text-align: justify;
 }
 
-#main {
+.detailsFilme{
     margin-top: 40px;
     display: -webkit-flex;
     -webkit-align-items: center;
@@ -86,4 +93,12 @@
     margin-bottom: 5px;
     min-width: 250px;
 }
-
+/*estilo do segunda barra*/
+.barra{
+    padding-top:5px;
+    padding-bottom:5px;
+}
+/*botões*/
+.botao{
+    width:170px;
+}

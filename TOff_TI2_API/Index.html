@@ -7,15 +7,11 @@
     <link href="Content/chosen.css" rel="stylesheet" />
     <link href="Content/Site.css" rel="stylesheet" />
     <link href="Content/TimeOff.css" rel="stylesheet" />
-    <style>
-        body {
-            background-color: beige;
-        }
-    </style>
 </head>
 <body>
     <div class="logo">TimeOff</div>
-    <div id="pagina">
+
+    <div id="main">
 
     </div>
 
@@ -25,25 +21,227 @@
     <script src="Scripts/respond.js"></script>
 
     <script>
+
+        function loadRealizador(idRealizador) {
+            getRealizadorDetails(idRealizador).then(function (result) { console.log(result); })
+                .catch(error => console.error(error));;
+        }
+
+        function imageRealizador(result) {
+            var div_holder_img = $("<div>");
+            div_holder_img.css({ border: "solid", borderColor: "black" });
+
+            var img = $("<img>");
+            div_holder_img.append(img);
+            img.attr("src", "ImagensRealizadores/" + result.id + result.imagem);
+            img.attr("width", "285");
+            img.attr("height", "413");
+            return div_holder_img;
+        }
+
+        function loadRealizador(idRealizador) {
+            getRealizadorDetails(idRealizador).then(function (result) {
+
+
+                var div_holder_All = $("<div>");
+
+                var div_holder = $("<div>");
+                div_holder_All.append(div_holder);
+                div_holder.addClass("detailsFilme");
+
+
+
+                div_holder.append(imageRealizador(result));
+
+                var div_holder_info = $("<div>");
+                div_holder.append(div_holder_info);
+                //Nome do Filme
+                var div_nome = $("<div>");
+                div_holder_info.append(div_nome);
+                div_nome.addClass("nome");
+                div_nome.text(result.nome);
+
+                var div_ano = $("<div>");
+                div_holder_info.append(div_ano);
+                div_ano.css({ marginLeft: "150px" });
+
+                var div_anoTexto = $("<h3>");
+                div_ano.append(div_anoTexto);
+                div_anoTexto.css({ fontFamily: "Arial", fontWeight: "bold", color: "black" });
+                div_anoTexto.text(result.ano);
+                
+
+                var div_sinopse = $("<div>");
+                div_holder_All.append(div_sinopse);
+                div_sinopse.addClass("sinopse");
+
+                var h3_titSinopse = $("<h3>");
+                div_sinopse.append(h3_titSinopse);
+                h3_titSinopse.css({ fontFamily: "Arial", fontWeight: "bold", color: "darkred" });
+                h3_titSinopse.text("Sinopse");
+
+                var span_sinopse = $("<span>");
+                div_sinopse.append(span_sinopse);
+                span_sinopse.text(result.sinopse);
+                
+
+
+
+
+                $("#main").html("").append(div_holder_All);
+
+            });
+        }
+
+
+
+
+
+
+
+
+
+        function imageFilme(result) {
+            var div_holder_img = $("<div>");
+            div_holder_img.css({ border: "solid", borderColor: "black" });
+
+            var img = $("<img>");
+            div_holder_img.append(img);
+            img.attr("src", "Imagens/" + result.id + result.imagem);
+            img.attr("width", "285");
+            img.attr("height", "413");
+            return div_holder_img;
+        }
+
+        function loadFilmDetails(idFilme) {
+            getFilmDetails(idFilme).then(function (result) {
+
+                var div_holder_All = $("<div>");
+
+                var div_holder = $("<div>");
+                div_holder_All.append(div_holder);
+                div_holder.addClass("detailsFilme");
+
+                
+
+                div_holder.append(imageFilme(result));
+
+                var div_holder_info = $("<div>");
+                div_holder.append(div_holder_info);
+                //Nome do Filme
+                var div_nome = $("<div>");
+                div_holder_info.append(div_nome);
+                div_nome.addClass("nome");
+                div_nome.text(result.titulo);
+
+                var div_ano = $("<div>");
+                div_holder_info.append(div_ano);
+                div_ano.css({ marginLeft: "150px" });
+
+                var div_anoTexto = $("<h3>");
+                div_ano.append(div_anoTexto);
+                div_anoTexto.css({ fontFamily: "Arial", fontWeight: "bold", color: "black" });
+                div_anoTexto.text(result.ano);
+
+                var div_categorias = $("<div>");
+                div_holder_info.append(div_categorias);
+                div_categorias.css({ marginLeft: "150px" });
+                var p_categorias = $("<p>");
+                div_categorias.append(p_categorias);
+                p_categorias.css({ fontFamily: "Arial", fontWeight: "bold", color: "black", fontSize: "18px" });
+                var tempStringBuild = "";
+                for (var i = 0; i < result.categoria.length; i++) {
+                    tempStringBuild += result.categoria[i].Nome;
+                    if (i < result.categoria.length - 1) tempStringBuild += ", ";
+                }
+                p_categorias.text(tempStringBuild);
+
+                var div_realizador = $("<div>");
+                div_holder_info.append(div_realizador);
+                div_realizador.css({ marginLeft: "150px" });
+                var h3_realizador = $("<h3>");
+                div_realizador.append(h3_realizador);
+                h3_realizador.css({ textDecoration: "underline",color: "blue",cursor: "pointer",fontFamily: "Arial", fontWeight: "bold",  fontSize: "18px" });
+                h3_realizador.text(result.realizadorNome);
+                let idRealizador = result.realizador;
+                h3_realizador.click(function () {
+                    loadRealizador(idRealizador);
+                });
+
+
+                var div_atores = $("<div>");
+                div_holder_info.append(div_atores);
+                div_atores.css({ marginLeft: "150px" });
+                var p_atores = $("<p>");
+                div_atores.append(p_atores);
+                p_atores.css({ fontFamily: "Arial", fontWeight: "bold", color: "black", fontSize: "18px" });
+                tempStringBuild = "";
+                for (var i = 0; i < result.atores.length; i++) {
+                    tempStringBuild += result.atores[i].Nome;
+                    if (i < result.atores.length - 1) tempStringBuild += ", ";
+                }
+                p_atores.text(tempStringBuild);
+
+                var div_sinopse = $("<div>");
+                div_holder_All.append(div_sinopse);
+                div_sinopse.addClass("sinopse");
+
+                var h3_titSinopse = $("<h3>");
+                div_sinopse.append(h3_titSinopse);
+                h3_titSinopse.css({ fontFamily: "Arial", fontWeight: "bold", color: "darkred" });
+                h3_titSinopse.text("Sinopse");
+
+                var span_sinopse = $("<span>");
+                div_sinopse.append(span_sinopse);
+                span_sinopse.text(result.sinopse);
+
+                var div_trailler = $("<div>");
+                div_holder_All.append(div_trailler);
+
+                var h3_trailler = $("<h3>");
+                div_trailler.append(h3_trailler);
+                h3_trailler.css({ fontFamily: "Arial", fontWeight: "bold", color: "darkred" });
+                h3_trailler.text("Trailer:");
+
+                var iframe_trailler = $("<iframe>");
+                div_trailler.append(iframe_trailler);
+                iframe_trailler.css("width", "100%");
+                iframe_trailler.attr("height", "510");
+                iframe_trailler.attr("src", result.trailer);
+
+
+
+
+
+                $("#main").html("").append(div_holder_All);
+
+            });
+        }
+
         function geraFilmeParaLista(item) {
+
             var holder = $("<div>"); // faz o mesmo que var holder = document.createElement("div");
             holder.addClass("seg");
 
             var texto = $("<div>"); // cria uma Div
-            texto.addClass("texto"); //Adiciona uma classe
+            texto.addClass("texto"); //Adiciona uma classe do css
 
             var h2 = $("<h2>");
+            h2.click(function () { loadFilmDetails(idTemp); });
             h2.text(item.titulo);
+            h2.css({ cursor: "pointer" });
             texto.append(h2);
             holder.append(texto);
+
             var img = $("<img>");
-            img.attr("src", "Imagens/" + item.id + item.imagem); //Adiciona  a Imagem do Filme 
-            img.css({ width: "100%", minHeight: "100%", height: "auto", marginTop: "-65px" }); 
+            let idTemp = item.id;
+            img.click(function () { loadFilmDetails(idTemp); });
+            img.attr("src", "Imagens/" + item.id + item.imagem); //Adiciona  a Imagem do Filme
+            img.css({ cursor: "pointer", width: "100%", minHeight: "100%", height: "auto", marginTop: "-65px" }); //css da imagens do filme
             holder.append(img);
             return holder;
+
         }
-
-
         function generateListFilmes(items) {
             var holder = $("<div>");
             holder.addClass("prim");
@@ -51,7 +249,7 @@
             for (i = 0; i < items.length; i++) {
                 holder.append(geraFilmeParaLista(items[i]));
             }
-            $("#pagina").html("").append(holder);
+            $("#main").html("").append(holder);
         }
 
         function getFilmesList() {
@@ -65,10 +263,44 @@
                 });
         }
 
-        $(window).load(function () {
+        function getFilmDetails(idFilme) {
+            return fetch("/api/filme/" + idFilme, { headers: { Accept: "application/json" } })
+                .then(function (resposta) {
+                    if (resposta.status === 200) {
+                        return resposta.json();
+                    } else {
+                        return Promise.reject(new Error("Um Erro ocurreu"));
+                    }
+                });
+        }
+
+
+
+        function getRealizadorDetails(idRealizador) {
+            return fetch("/api/realizador/" + idRealizador, { headers: { Accept: "application/json" } })
+                .then(function (resposta) {
+                    if (resposta.status === 200) {
+                        return resposta.json();
+                    } else {
+                        return Promise.reject(new Error("Um Erro ocurreu"));
+                    }
+                });
+        }
+
+        function inicPage() {
             getFilmesList().then(function (r) {
                 generateListFilmes(r);
             });
+        }
+
+        $(window).load(function () {
+            inicPage();
+        });
+
+
+
+        $(".logo").click(function () {
+            inicPage();
         });
     </script>
 </body>
