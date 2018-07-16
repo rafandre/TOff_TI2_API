@@ -62,8 +62,9 @@ function RealizadorFilme(result) {
     h3_realizador.css({ textDecoration: "underline", color: "Darkred", cursor: "pointer", fontFamily: "Arial", fontWeight: "bold", fontSize: "18px" });
     h3_realizador.text(result.realizadorNome);
     let idRealizador = result.realizador;
+    let idFilme = result.id;
     h3_realizador.click(function () {
-        loadRealizador(idRealizador);
+        loadRealizador(idRealizador,idFilme);
     });
 
     return div_realizador;
@@ -125,3 +126,4 @@ function TrailerFilme(result) {
 
     return div_trailler;
 }
+

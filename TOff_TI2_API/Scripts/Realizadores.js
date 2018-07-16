@@ -52,3 +52,18 @@ function Biografia(result) {
 
     return div_sinopse
 }
+
+//Botão para voltar para os filmes 
+function bt_goBack(iFilm) {
+
+    var button_goBack = $("<a>");
+    button_goBack.css({ display: "block", marginTop: "20px", color: "black", width: "100px", borderColor: "#000", backgroundColor: "#ccc" });
+    button_goBack.attr("href", "#");
+    button_goBack.addClass("btn btn-default");
+    button_goBack.click(function (evt) {
+        evt.preventDefault();
+        loadFilmDetails(iFilm);
+    });
+    button_goBack.text("Voltar");
+    return button_goBack;
+}

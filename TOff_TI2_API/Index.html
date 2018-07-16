@@ -22,12 +22,14 @@
     <script src="Scripts/Inicio.js"></script>
 
     <script>
+
         //Carrega as Informações Referente aos Realizadores
-        function loadRealizador(idRealizador) {
+        function loadRealizador(idRealizador, idFilme) {
+            let iFilm = idFilme;
             getRealizadorDetails(idRealizador).then(function (result) {
 
                 var div_holder_All = $("<div>");
-
+                div_holder_All.append(bt_goBack(iFilm));
                 var div_holder = $("<div>");
                 div_holder_All.append(div_holder);
                 div_holder.addClass("detailsFilme");
