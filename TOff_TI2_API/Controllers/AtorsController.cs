@@ -24,96 +24,20 @@ namespace TimeOff.Api
         }
 
         // GET: api/Ators/5
-        [ResponseType(typeof(Ator))]
-        public IHttpActionResult GetAtor(int id)
+        [HttpGet, Route("api/atores")]
+        public IHttpActionResult GetAtor()
         {
-            Ator ator = db.Ators.Find(id);
-            if (ator == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(ator);
-        }
-
-        // PUT: api/Ators/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutAtor(int id, Ator ator)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != ator.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(ator).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AtorExists(id))
+            //codigo
+            var resultado = db.Ators.Select(
+                aa => new
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                    id = aa.Id,  // Retorna o Id da categoria  
+                    nome = aa.Nome, // Retorna o Nome da categoria
+                })
+                .ToList();  // O ToList() executa a query na base de dados e guarda os resultados numa List<>.
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+            return Ok(resultado);
+        }  
 
-        // POST: api/Ators
-        [ResponseType(typeof(Ator))]
-        public IHttpActionResult PostAtor(Ator ator)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Ators.Add(ator);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = ator.Id }, ator);
-        }
-
-        // DELETE: api/Ators/5
-        [ResponseType(typeof(Ator))]
-        public IHttpActionResult DeleteAtor(int id)
-        {
-            Ator ator = db.Ators.Find(id);
-            if (ator == null)
-            {
-                return NotFound();
-            }
-
-            db.Ators.Remove(ator);
-            db.SaveChanges();
-
-            return Ok(ator);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool AtorExists(int id)
-        {
-            return db.Ators.Count(e => e.Id == id) > 0;
-        }
     }
 }

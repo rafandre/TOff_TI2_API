@@ -15,7 +15,6 @@ using TOff_TI2_API.Models;
 
 namespace TimeOff.Api
 {
-    
     public class RealizadorsController : ApiController
     {
         //referência para a base de dados  
@@ -50,11 +49,12 @@ namespace TimeOff.Api
                    nome = aa.NomeRealizador, // Retorna o Titulo do Filme 
                    ano = aa.DataNasc, // Retorna o Ano de Lançamento 
                    sinopse = aa.Biografia, //Rertorna a Biografia do Realizador 
-                   imagem= aa.ImagemRealizador
+                   imagem = aa.ImagemRealizador
                }).Where(r => r.id == id).First();
 
             if (resultado == null) return NotFound();
-            var realizador = new {
+            var realizador = new
+            {
                 id = resultado.id,  // Retorna o Id do Realizador
                 nome = resultado.nome, // Retorna o Titulo do Filme 
                 ano = resultado.ano.ToString("dd/MM/yyyy"), // Retorna o Ano de Lançamento 
@@ -64,84 +64,5 @@ namespace TimeOff.Api
             return Ok(realizador);
         }
 
-        // PUT: api/Realizadors/5
-        [HttpGet, Route("api/realizador")]
-        public IHttpActionResult PutRealizador(int id, Realizador realizador)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != realizador.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(realizador).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RealizadorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Realizadors
-        [ResponseType(typeof(Realizador))]
-        public IHttpActionResult PostRealizador(Realizador realizador)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Realizador.Add(realizador);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = realizador.Id }, realizador);
-        }
-
-        // DELETE: api/Realizadors/5
-        [ResponseType(typeof(Realizador))]
-        public IHttpActionResult DeleteRealizador(int id)
-        {
-            Realizador realizador = db.Realizador.Find(id);
-            if (realizador == null)
-            {
-                return NotFound();
-            }
-
-            db.Realizador.Remove(realizador);
-            db.SaveChanges();
-
-            return Ok(realizador);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool RealizadorExists(int id)
-        {
-            return db.Realizador.Count(e => e.Id == id) > 0;
-        }
     }
 }
